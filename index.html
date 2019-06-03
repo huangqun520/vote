@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Hello React!</title>
+<link rel="stylesheet" href="./index.css">
+<script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+<script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+<script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+<body>
+
+<div id="example"></div>
+ <script type="text/babel">
+//  allPeople为部门所有人 没有被投票的权利的人将其status设置为false
+ const allPeople = [
+    {
+        name: '刘钦铸',
+        englishName:'lqt',
+        status: true,
+    },
+    {
+        name: '刘志斌',
+        englishName:'lzb',
+        status: true
+    },
+    {
+        name: '柯艳琴',
+        englishName:'kyq',
+        status: true
+    },
+    {
+        name: '马文涛',
+        englishName:'mwt',
+        status: false
+    },
+    {
+        name: '戴敏',
+        englishName:'dm',
+        status: true
+    },
+    {
+        name: '叶国良',
+        englishName:'ygl',
+        status: true
+    },
+    {
+        name: '熊龙辉',
+        englishName:'xlh',
+        status: true
+    },
+    {
+        name: '许璠',
+        englishName:'xf',
+        status: true
+    },
+    {
+        name: '艾小姚',
+        englishName:'axy',
+        status: false
+    },
+    {
+        name: '王晓芳',
+        englishName:'wxf',
+        status: true
+    },
+    {
+        name: '张 贵',
+        englishName:'zg',
+        status: false
+    },
+    {
+        name: '姜明哲',
+        englishName:'jmz',
+        status: false
+    } ,
+    {
+        name: '王生资',
+        englishName:'wsz',
+        status: true
+    },
+    {
+        name: '孟腾飞',
+        englishName:'mtf',
+        status: true
+    },
+    {
+        name: '徐 海',
+        englishName:'xh',
+        status: true
+    },
+    {
+        name: '刘雅琴',
+        englishName:'lyq',
+        status: true
+    },
+    {
+        name: '黄 群',
+        englishName:'hq',
+        status: true
+    }
+]
+
+ class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  onHandle = (e) => {
+    let tepmArr = new Set()
+    if (e.target.value) {
+      if (!this.state[e.target.name]) {
+        tepmArr.add(e.target.value)
+        this.setState({
+          [e.target.name]: [...tepmArr]
+        })
+      } else {
+        this.state[e.target.name].map((item) => {
+          tepmArr.add(item)
+        })
+        tepmArr.add(e.target.value)
+        this.setState({
+          [e.target.name]: [...tepmArr]
+        })
+      }
+    }
+  }
+
+  renderContent = () => {
+    return allPeople.map(({ name, status, englishName }, index) => (
+      status && <div key={index} className='item-box'>
+        <div className='name'>{`${name}：`}</div>
+        <input placeholder='选我，就输入或选择你的名字！' name={englishName} onBlur={(e) => this.onHandle(e)} />
+        <select name={englishName} onChange={(e) => this.onHandle(e)}>
+          {
+            allPeople.map(({ name: nameValue }, index) => (
+              name !== nameValue && <option key={index} value={nameValue}>{nameValue}</option>
+            ))
+          }
+        </select>
+        <div className='select-name'>
+          {
+            this.state[englishName] && this.state[englishName].map((name) => (
+              <span className='select'>{name}</span>
+            ))
+          }
+        </div>
+        <div className='high'>
+          {
+            this.state[englishName] && <span>{`人气指数：${this.state[englishName].length}`}</span>
+          }
+        </div>
+      </div>
+    ))
+  }
+ 
+  render() {
+    return (
+		<div className="App">
+        <h2>选出你心中本周之星</h2>
+        {
+          this.renderContent()
+        }
+      </div>
+    );
+  }
+}
+ 
+ReactDOM.render(
+  <App />,
+  document.getElementById('example')
+);
+ </script>
+</body>
+</html>
